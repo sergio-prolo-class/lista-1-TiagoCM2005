@@ -3,12 +3,22 @@
  */
 package org.example;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
+public class App { 
+    
+    static void tabuleiro10x10(){
+        int tamanho = 10;
+        for(int i = 0; i < tamanho; i++){
+            for(int j = 0; j < tamanho; j++){
+                System.out.print(". ");
+            }
+            System.out.println();
+        }
+    }
+   public static void main(String[] args) {
+        tabuleiro10x10();
     }
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-    }
+
+
+
 }
