@@ -19,16 +19,31 @@
  * Para a segunda parte do atividade, onde é preciso verificar se há um navio desconhecido, como vamos ler a linha por linha do tabuleiro, podemos verificar se há um navio desconhecido.
  * Feito um switch, onde cada caso é um navio conhecido, e o default é o navio desconhecido;
  * uma variável recebe os valores de elementos[i].charAt(0), e em um switch, verifica se o valor é um navio conhecido ou não;
+ * 
+ * Para a terceira parte, onde é verificado se cada navio foi incluido pelo menos uma vez no tabuleiro. é percorrido um o tabuleiro dentro de um FOR, dentro do FOR é usado um switch
+ * que em cada caso é um navio diferente, e caso encontre, podemos alterar o valor da variável, exemplo:
+ *  Na primeira linha do tabuleiro ele encontre N, dentro do switch tem o caso N e ele atribui ao uma variável um sinal positivo, por exemplo, número 0 ou true;
+ * Para saber se todos foram adicionados, um IF com o operadora &&, então vai ser preciso ser um booleano, se o resultado for true, quer dizer que está correto, caso contrário, falta
+ * algum outro navio.
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * Para fazer a leitura do arquivo, foi criado um arquivo.txt, onde para testar o código, é necessário alterar o conteudo do arquivo. 
+ * Não encontrei uma forma de fazer a entrada do arquivo, da forma que o docente pediu, então segui o mesmo metôdo utilizado em programação 2.
  */
+
 
  package org.example;
  import java.util.Scanner;
  
  public class App {
-     static final int tamanho = 10; // Define uma variável global
+        static final int tamanho = 10; // Define uma variável global
 
  
-     static boolean lerTabuleiro(Scanner teclado_in, char[][] tabuleiro) {
+        static boolean lerTabuleiro(Scanner teclado_in, char[][] tabuleiro) {
          int linhas_lidas = 0; // vai existir uma variável que será responsável em verificar se a quatidade de linhas lidas no tabuleiro estão na dimensão correta
  
          while(teclado_in.hasNextLine()) { // Um while que vai ficar no loop até ler todas as linhas do arquivo
@@ -84,8 +99,10 @@
  
          return linhas_lidas == tamanho;
      }
+
+    
  
-     static void imprimirTabuleiro(char[][] tabuleiro) {
+        static void imprimirTabuleiro(char[][] tabuleiro) {
          for(int i = 0; i < tamanho; i++){
              for(int j = 0; j < tamanho; j++){
                  System.out.print(tabuleiro[i][j] + " "); // Vai imprimir o tabuleiro separando os elementos com " "(espaço)
@@ -93,15 +110,56 @@
              System.out.println();
          }
      }
-      
-     public static void main(String[] args) {
-        Scanner teclado_in = new Scanner(System.in); // Scanner iniciado
-        char[][] tabuleiro = new char[tamanho][tamanho]; // Matriz tabuleiro de 10X10, que vai guardar os caracteres do tabuleiro
-        
-        if (lerTabuleiro(teclado_in, tabuleiro)) {
-            System.out.println("Tabuleiro está correta");
-            imprimirTabuleiro(tabuleiro);
+        static boolean verifica_navio(char[][] tabuleiro){
+            boolean P = false, E = false, C = false, S = false, N = false; // Variáveis que vão representar cada navio
+
+            for(int i = 0; i < tamanho; i++){
+                for(int j = 0; j < tamanho; j++){
+                    switch(tabuleiro[i][j]){ // Vai ler todo o tabuleiro, caso encontre o valor na linha, atribui ao respectivo nome, o valor de true.
+                        case 'P': P = true;
+                        break;
+                        case 'E': E = true;
+                        break;
+                        case 'C': C = true;
+                        break;
+                        case 'S': S = true;
+                        break;
+                        case 'N': N = true;
+                        break;
+                    }
+                }
+            }
+
+            boolean verifica_navio = (P && E && C && S && N);
+            return verifica_navio;
         }
-    }
+      
+        public static void main(String[] args) {
+            Scanner teclado_in;
+            try {
+                teclado_in = new Scanner(new java.io.File("tabuleiro.txt")); // Lê o arquivo diretamente
+            } catch (java.io.FileNotFoundException e) {
+                System.out.println("Arquivo tabuleiro.txt não encontrado.");
+                return;
+            }
+        
+            char[][] tabuleiro = new char[tamanho][tamanho]; // Matriz tabuleiro de 10X10
+        
+            if (lerTabuleiro(teclado_in, tabuleiro)) {
+                System.out.println("Tabuleiro está correto");
+                imprimirTabuleiro(tabuleiro);
+        
+                if (verifica_navio(tabuleiro)) {
+                    System.out.println("Todos os navios estão presentes!");
+                } else {
+                    System.out.println("Nem todos os navios foram acrescentados");
+                }
+        
+            } else {
+                System.out.println("Falha na leitura ou validação do tabuleiro.");
+            }
+        }
+        
+
  }
  
